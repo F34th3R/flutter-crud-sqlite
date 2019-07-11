@@ -1,5 +1,5 @@
+import 'package:crud_sqlite/controller/employeeController.dart';
 import 'package:crud_sqlite/model/employee.dart';
-import 'package:crud_sqlite/sqlite/helper_sqlite.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -17,20 +17,20 @@ class _MyAppState extends State<MyApp> {
   int curUserId;
 
   final formKey = new GlobalKey<FormState>();
-  var dbHelper;
+  var employeeController;
   bool isUpdating;
 
   @override
   void initState() {
     super.initState();
-    dbHelper = DBHelper();
+    employeeController = EmployeeController();
     isUpdating = false;
     refreshList();
   }
 
   refreshList() {
     setState(() {
-      employees = dbHelper.getEmployees();
+      employees = employeeController.getEmployees();
     });
   }
 
@@ -43,13 +43,13 @@ class _MyAppState extends State<MyApp> {
       formKey.currentState.save();
       if (isUpdating) {
         Employee e = Employee(curUserId, name);
-        dbHelper.update(e);
+        employeeController.update(e);
         setState(() {
           isUpdating = false;
         });
       } else {
         Employee e = Employee(null, name);
-        dbHelper.save(e);
+        employeeController.save(e);
       }
       clearName();
       refreshList();
@@ -125,10 +125,16 @@ class _MyAppState extends State<MyApp> {
             DataCell(IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                dbHelper.delete(employee.id);
+                employeeController.delete(employee.id);
                 refreshList();
               },
             )),
+//              DataCell(
+//                Icon(Icons.warning),
+//                onTap: () {
+//                  employeeController.exist(employee.name);
+//                },
+//              ),
           ]),
         ).toList(),
       ),
