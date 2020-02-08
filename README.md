@@ -2,4 +2,4 @@
 
 A simple CRUD application with SQLite.
 
-![app](App_Screenshot.jpg)
+![app](./docs/App_Screenshot.jpg)
